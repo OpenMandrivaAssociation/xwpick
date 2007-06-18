@@ -1,16 +1,14 @@
 %define name	xwpick
 %define	version	2.20
-%define	release	13mdk
+%define	release	%mkrel 14
 
 Name:		%{name}
 Summary:	A X Window System screenshot grabber
-
 Version:	%{version}
 Release:	%{release}
 License:	MIT
-Icon:		%{name}.xpm
 Group:		Graphics
-BuildRequires:	XFree86-devel X11
+BuildRequires:	imake libx11-devel libxext-devel
 Source0:	ftp://ftp.x.org/contrib/applications/%{name}-%{version}.tar.bz2
 Source11:	%{name}-16.png
 Source12:	%{name}-32.png
@@ -27,8 +25,8 @@ a file in a variety of formats, incuding PostScript(TM), GIF, and PICT.
 
 %build
 xmkmf
-perl -p -i -e "s|CXXDEBUGFLAGS = .*|CXXDEBUGFLAGS = $RPM_OPT_FLAGS|" Makefile
-perl -p -i -e "s|CDEBUGFLAGS = .*|CDEBUGFLAGS = $RPM_OPT_FLAGS|" Makefile 
+perl -pi -e "s|CXXDEBUGFLAGS = .*|CXXDEBUGFLAGS = $RPM_OPT_FLAGS|" Makefile
+perl -pi -e "s|CDEBUGFLAGS = .*|CDEBUGFLAGS = $RPM_OPT_FLAGS|" Makefile 
 %make
 
 %install
@@ -38,19 +36,26 @@ rm -rf $RPM_BUILD_ROOT
 
 # icons
 install -m644 %{SOURCE11} -D $RPM_BUILD_ROOT%{_miconsdir}/%{name}.png
+install -m644 %{SOURCE11} -D $RPM_BUILD_ROOT%{_iconsdir}/hicolor/16x16/apps/%{name}.png
 install -m644 %{SOURCE12} -D $RPM_BUILD_ROOT%{_iconsdir}/%{name}.png
+install -m644 %{SOURCE12} -D $RPM_BUILD_ROOT%{_iconsdir}/hicolor/32x32/apps/%{name}.png
 install -m644 %{SOURCE13} -D $RPM_BUILD_ROOT%{_liconsdir}/%{name}.png
+install -m644 %{SOURCE13} -D $RPM_BUILD_ROOT%{_iconsdir}/hicolor/48x48/apps/%{name}.png
 
 # Menu entry
-mkdir -p $RPM_BUILD_ROOT%{_menudir}
-cat >$RPM_BUILD_ROOT%{_menudir}/%{name} <<EOF
-?package(xwpick):\
-	command="%{_prefix}/X11R6/bin/xwpick"\
-	needs="text"\
-	icon="xwpick.png"\
-	section="Multimedia/Graphics"\
-	title="Xwpick"\
-	longtitle="X Window System screenshot grabber"
+
+mkdir -p %{buildroot}%{_datadir}/applications
+cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop <<EOF
+[Desktop Entry]
+Encoding=UTF-8
+Name=Xwpick
+Comment=Screenshot grabber
+Exec=%{_bindir}/%{name} 
+Icon=%{name}
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=Graphics;2DGraphics;
 EOF
 
 %clean
@@ -58,17 +63,20 @@ rm -fr $RPM_BUILD_ROOT
 
 %post
 %{update_menus}
+%update_icon_cache hicolor
 
 %postun
 %{clean_menus}
+%clean_icon_cache hicolor
 
 %files
 %defattr(-,root,root)
-%{_prefix}/X11R6/bin/xwpick
-%{_prefix}/X11R6/man/man1/xwpick.1*
-%{_prefix}/X11R6/lib/X11/doc/html/xwpick.1.html
-%{_menudir}/%{name}
+%{_bindir}/%{name}
+%{_mandir}/man1/xwpick.1*
 %{_miconsdir}/%{name}.png
 %{_iconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
-
+%{_datadir}/applications/mandriva-%{name}.desktop
+%{_iconsdir}/hicolor/16x16/apps/%{name}.png
+%{_iconsdir}/hicolor/32x32/apps/%{name}.png
+%{_iconsdir}/hicolor/48x48/apps/%{name}.png
