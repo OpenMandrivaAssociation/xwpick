@@ -13,7 +13,6 @@ Source0:	ftp://ftp.x.org/contrib/applications/%{name}-%{version}.tar.bz2
 Source11:	%{name}-16.png
 Source12:	%{name}-32.png
 Source13:	%{name}-48.png
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 The xwpick program allows you to choose an image or a rectangular piece
