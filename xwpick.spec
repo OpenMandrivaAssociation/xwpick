@@ -1,11 +1,10 @@
 %define name	xwpick
 %define	version	2.20
-%define	release	%mkrel 14
 
 Name:		%{name}
 Summary:	A X Window System screenshot grabber
 Version:	%{version}
-Release:	%{release}
+Release:	%mkrel 15
 License:	MIT
 Group:		Graphics
 BuildRequires:	imake libx11-devel libxext-devel
