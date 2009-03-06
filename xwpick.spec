@@ -4,7 +4,7 @@
 Name:		%{name}
 Summary:	A X Window System screenshot grabber
 Version:	%{version}
-Release:	%mkrel 15
+Release:	%mkrel 16
 License:	MIT
 Group:		Graphics
 BuildRequires:	imake libx11-devel libxext-devel
