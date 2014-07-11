@@ -1,7 +1,7 @@
 Name:		xwpick
 Summary:	A X Window System screenshot grabber
 Version:	2.20
-Release:	26
+Release:	27
 License:	MIT
 Group:		Graphics
 BuildRequires:	imake 
